@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"name": "Prueba1",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": null, "a": null }, "geometry": null },
+{ "type": "Feature", "properties": { "id": null, "a": null }, "geometry": null },
+{ "type": "Feature", "properties": { "id": 1, "a": null }, "geometry": { "type": "Point", "coordinates": [ -66.644736970572637, -39.082129327682935 ] } }
+]
+}
