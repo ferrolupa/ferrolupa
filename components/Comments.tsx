@@ -37,22 +37,27 @@ useEffect(() => {
   }, [pageId]);
 
   // Publicar comentario
-  const publish = async () => {
-    if (!text.trim()) return;
-    const displayName = user ? user.displayName : name.trim();
-    const avatar = user ? user.photoURL : null;
+const publish = async () => {
+  if (!text.trim()) return;
 
-    await addDoc(collection(db, "comments", pageId, "items"), {
+  const displayName =
+    user?.displayName || user?.providerData?.[0]?.displayName || name.trim() || "Anónimo";
+
+  const avatar =
+    user?.photoURL || user?.providerData?.[0]?.photoURL || null;
+
+  await addDoc(collection(db, "comments", pageId, "items"), {
     text,
     name: displayName,
     avatar,
     userId: user ? user.uid : null,
     timestamp: serverTimestamp(),
-    });
+  });
 
-    setText("");
-    setName("");
-  };
+  setText("");
+  setName("");
+};
+
 
   return (
     <div className="mt-8">
@@ -79,7 +84,19 @@ useEffect(() => {
 
       {user && (
         <div className="mb-4 flex items-center gap-3">
-          <img src={user.photoURL} className="w-8 h-8 rounded-full" />
+          <img
+  src={
+    user?.photoURL ??
+    user?.providerData?.[0]?.photoURL ??
+    "/avatar-default.png"
+  }
+  className="w-8 h-8 rounded-full object-cover bg-gray-200"
+  alt="avatar"
+  onError={(e) => {
+    (e.currentTarget as HTMLImageElement).src = "/avatar-default.png";
+  }}
+/>
+
           <span className="font-medium">{user.displayName}</span>
 
           <button

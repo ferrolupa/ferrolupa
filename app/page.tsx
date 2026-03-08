@@ -177,7 +177,11 @@ export default function HomePreview() {
           <Card className="rounded-md shadow-sm border border-gray-200 transition hover:shadow-md">
             <CardContent className="p-0">
               <div className="h-48 bg-gray-100 flex items-center justify-center rounded-t-md">
-                <Newspaper size={36} className="text-ferroverde" />
+               <img
+                src="/historias/000/mini1.jpg"
+                alt="Historias del Riel"
+                className="w-full h-full object-cover rounded-xl"
+                />
               </div>
 
               <div className="p-4">

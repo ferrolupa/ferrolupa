@@ -13,8 +13,9 @@ export default function Page() {
       videoId={data.videoId}
     >
       <>
-        <p>Primer párrafo de la historia…</p>
-        <p>Segundo párrafo, etc…</p>
+        <p>La noche del 27 de noviembre de 1965 quedó grabada en la historia de Bahía Blanca. Una cadena de fallas técnicas, decisiones humanas y ausencia de sistemas de seguridad derivaron en una de las tragedias ferroviarias más dolorosas de la ciudad.</p>
+        <p>Esta historia no habla solo de un accidente, sino de cómo la infraestructura, la tecnología disponible (o su ausencia) pueden cambiar destinos.</p>
+        <p>En el siguiente video reconstruimos los hechos y el contexto que llevaron a aquel fatídico desenlace.</p>
       </>
     </HistoriaLayout>
   );

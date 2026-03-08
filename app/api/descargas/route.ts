@@ -1,13 +1,27 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
 import path from "path";
+import fs from "fs";
 
 export async function GET() {
-  const folder = path.join(process.cwd(), "public/descargas");
-  const files = fs.readdirSync(folder);
-  const list = files.map((file) => ({
-    name: file,
-    url: `/descargas/${file}`,
-  }));
-  return NextResponse.json(list);
+  try {
+    // ruta al geojson dentro de data/mapa
+    const filePath = path.join(process.cwd(), "data/mapa/Red_Principal.geojson");
+    const fileContents = fs.readFileSync(filePath, "utf-8");
+    const geojson = JSON.parse(fileContents);
+
+    // devolvemos en formato "capas" como buscamos en MapFerrolupa
+    const response = {
+      capas: [
+        {
+          nombre: "Red_Principal",
+          datos: geojson,
+        },
+      ],
+    };
+
+    return NextResponse.json(response);
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ capas: [] });
+  }
 }

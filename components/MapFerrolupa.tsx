@@ -8,7 +8,7 @@ import "leaflet/dist/leaflet.css";
 
 const FERRO = "#00663E";
 
-/** Controla scrollWheelZoom según "active" sin whenCreated/whenReady */
+/** Controla scrollWheelZoom según "active" */
 function MapBehavior({ active }: { active: boolean }) {
   const map = useMap();
 
@@ -26,23 +26,18 @@ function MapBehavior({ active }: { active: boolean }) {
 }
 
 export default function MapFerrolupa() {
-  const [tramos, setTramos] = useState<FeatureCollection<Geometry> | null>(null);
-  const [estaciones, setEstaciones] = useState<FeatureCollection<Geometry> | null>(null);
-  const [depositos, setDepositos] = useState<FeatureCollection<Geometry> | null>(null);
-
+  const [redPrincipal, setRedPrincipal] = useState<FeatureCollection<Geometry> | null>(null);
   const [active, setActive] = useState(false);
 
-  // Datos
+  // Fetch Red_Principal
   useEffect(() => {
-    Promise.all([
-      fetch("/data/red_tramos.geojson").then(r => r.json()).catch(() => null),
-      fetch("/data/Prueba1.geojson").then(r => r.json()).catch(() => null),
-      fetch("/data/depositos.geojson").then(r => r.json()).catch(() => null),
-    ]).then(([t, e, d]) => {
-      if (t) setTramos(t);
-      if (e) setEstaciones(e);
-      if (d) setDepositos(d);
-    });
+    fetch("/api/mapa") // tu route.ts debe devolver { capas: [{ nombre, datos }] }
+      .then((r) => r.json())
+      .then((data) => {
+        const red = data.capas.find((c: any) => c.nombre === "Red_Principal");
+        if (red) setRedPrincipal(red.datos);
+      })
+      .catch(() => null);
   }, []);
 
   // Popup genérico
@@ -54,23 +49,24 @@ export default function MapFerrolupa() {
     layer.bindPopup(`<table>${rows}</table>`);
   };
 
-  // Activar / desactivar
+  // Ajustar bounds del mapa cuando se cargue la capa
+  const FitBoundsOnLoad = ({ geojson }: { geojson: FeatureCollection<Geometry> }) => {
+    const map = useMap();
+    useEffect(() => {
+      const layer = L.geoJSON(geojson);
+      map.fitBounds(layer.getBounds(), { padding: [50, 50] });
+    }, [map, geojson]);
+    return null;
+  };
+
+  // Activar / desactivar scroll
   const activate = () => setActive(true);
   const deactivate = () => setActive(false);
-
-  // Escape para desactivar
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") deactivate();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
 
   return (
     <div
       className="relative w-full h-[500px] select-none"
-      onMouseLeave={deactivate} // salir del mapa desactiva
+      onMouseLeave={deactivate}
     >
       {/* Borde por encima de Leaflet panes */}
       <div
@@ -80,7 +76,7 @@ export default function MapFerrolupa() {
         style={{ borderColor: active ? FERRO : "#e5e7eb" }}
       />
 
-      {/* Capa de activación: capta el primer click; luego desaparece */}
+      {/* Capa de activación */}
       {!active && (
         <div
           role="button"
@@ -94,8 +90,8 @@ export default function MapFerrolupa() {
       {/* Mapa */}
       <div className="absolute inset-0 rounded-2xl overflow-hidden">
         <MapContainer
-          center={[-38.4161, -63.6167]}
-          zoom={5}
+          center={[-40.50, -63.6167]} // este centro se ajustará con fitBounds
+          zoom={4}
           style={{ height: "100%", width: "100%" }}
         >
           <MapBehavior active={active} />
@@ -124,47 +120,18 @@ export default function MapFerrolupa() {
               />
             </LayersControl.BaseLayer>
 
-            {/* Overlays */}
-            {tramos && (
-              <LayersControl.Overlay checked name="Tramos">
-                <GeoJSON data={tramos} onEachFeature={onEach} style={() => ({ color: FERRO, weight: 2 })} />
-              </LayersControl.Overlay>
-            )}
-
-            {estaciones && (
-              <LayersControl.Overlay checked name="Estaciones">
-                <GeoJSON
-                  data={estaciones}
-                  onEachFeature={onEach}
-                  pointToLayer={(_, latlng) =>
-                    L.circleMarker(latlng, {
-                      radius: 5,
-                      color: FERRO,
-                      weight: 2,
-                      fillColor: FERRO,
-                      fillOpacity: 0.9,
-                    })
-                  }
-                />
-              </LayersControl.Overlay>
-            )}
-
-            {depositos && (
-              <LayersControl.Overlay name="Depósitos">
-                <GeoJSON
-                  data={depositos}
-                  onEachFeature={onEach}
-                  pointToLayer={(_, latlng) =>
-                    L.circleMarker(latlng, {
-                      radius: 6,
-                      color: "#00462C",
-                      weight: 2,
-                      fillColor: "#00462C",
-                      fillOpacity: 0.9,
-                    })
-                  }
-                />
-              </LayersControl.Overlay>
+            {/* Overlay Red_Principal */}
+            {redPrincipal && (
+              <>
+              
+                <LayersControl.Overlay checked name="Red Principal">
+                  <GeoJSON
+                    data={redPrincipal}
+                    onEachFeature={onEach}
+                    style={() => ({ color: FERRO, weight: 2 })}
+                  />
+                </LayersControl.Overlay>
+              </>
             )}
           </LayersControl>
         </MapContainer>

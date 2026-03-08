@@ -74,7 +74,7 @@ export default function HistoriaLayout({
 
           <iframe
             className="w-full h-full"
-            src={`https://www.youtube.com/embed/${videoId}`}
+            src={`https://www.youtube.com/embed/${videoId}?cc_load_policy=1&cc_lang_pref=es`}
             title="Video de la historia"
             loading="lazy"
             onLoad={() => setLoaded(true)}

@@ -1,31 +1,21 @@
 // /data/historiasIndex.ts
-
 export const historias = [
   {
     id: "001",
-
-    // Slug unificado (el del sitio real)
     slug: "/historias/001",
+    titulo: "Escape de Vagones - Bahía Blanca",
+    fecha: "1965",
+    bajada: "Estaba en lo de su tío, se quedó dormido y eso le salvo la vida",
 
-    // Campos que coinciden
-    titulo: "Durmientes que despertaron",
-    fecha: "3 de enero, 2025",
-    bajada: "La historia inesperada de un ramal que volvió a la vida.",
+    miniaturaListado: "historias/001/mini.jpeg",
+    imagenListado: "historias/001/mini.jpeg",
 
-    // Miniatura del listado (si en algún lado difiere, usamos sufijo 'Listado')
-    miniaturaListado: "/historias/mini1.jpg",
-
-    // Imagen grande que solo usaba el listado
-    imagenListado: "/historias/dos.jpg",
-
-    // Contenido HTML usado en el listado
     contenidoListado: `
-      <p>Tras años de abandono, un grupo de vecinos decidió recuperar el ramal.</p>
-      <p>La reapertura simbólica despertó la memoria ferroviaria del lugar.</p>
+      <p>La noche del 27 de noviembre de 1965 quedó grabada en la historia de Bahía Blanca.</p>
+      <p>Una cadena de fallas técnicas, decisiones humanas y ausencia de sistemas de seguridad derivaron en una de las tragedias ferroviarias más dolorosas de la ciudad.</p>
     `,
 
-    // Video para la página individual
-    videoId: "bc0KhhjJP98",
+    videoId: "ajD2Zihep9U",
   },
 
   {
@@ -33,18 +23,18 @@ export const historias = [
 
     slug: "/historias/002",
 
-    titulo: "El tren que unió dos pueblos",
-    fecha: "10 de enero, 2025",
-    bajada: "Un pequeño episodio que marcó a dos comunidades.",
+    titulo: "El dueño del tiempo",
+    fecha: "1880 - 1950",
+    bajada: "Donde el tren no llegaba a horario, la hora llegaba en tren.",
 
-    miniaturaListado: "/historias/mini2.jpg",
-    imagenListado: "/historias/uno.jpg",
+    miniaturaListado: "/historias/002/mini.webp",
+    imagenListado: "/historias/002/mini.webp",
 
     contenidoListado: `
-      <p>La llegada del tren cambió para siempre la dinámica entre ambos pueblos.</p>
-      <p>Fue un antes y un después social, económico y cultural.</p>
+      <p>Hubo una época en la que mirar el reloj no era suficiente.</p>
+      <p>Antes de la radio, del teléfono y de los relojes confiables, el ferrocarril era la referencia.</p>
     `,
-
-    videoId: "eH3giaIzONA?",
+    
+    videoId: "QmhcdlvUIUY",
   },
 ];

@@ -51,8 +51,7 @@ export default function DescargasCypPage() {
           </h1>
 
           <p className="text-sm text-gray-700 mt-2">
-            Planos estructurales, memorias de cálculo,
-            modelos analíticos y documentación avanzada para proyectos ferroviarios.
+            Especificaciones, rendimientos y analisis de precios unitarios para proyectos ferroviarios.
           </p>
         </header>
 
