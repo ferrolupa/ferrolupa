@@ -1,6 +1,14 @@
 import { historias } from "@/data/historiasIndex";
 import HistoriaLayout from "@/components/HistoriaLayout";
 
+export function generateMetadata() {
+  const data = historias.find((h) => h.id === "002");
+
+  return {
+    title: data ? data.titulo : "Historia",
+  };
+}
+
 export default function Page() {
   const data = historias.find((h) => h.id === "002");
 
