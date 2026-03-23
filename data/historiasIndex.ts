@@ -35,6 +35,6 @@ export const historias = [
       <p>Antes de la radio, del teléfono y de los relojes confiables, el ferrocarril era la referencia.</p>
     `,
     
-    videoId: "QmhcdlvUIUY",
+    videoId: "Meh7a4YtYv4",
   },
 ];
