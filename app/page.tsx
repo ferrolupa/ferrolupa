@@ -122,7 +122,7 @@ export default function HomePreview() {
     className="rounded-md shadow-sm border border-gray-200 transition hover:shadow-md"
   >
     <CardContent className="p-0">
-
+<a href={`/historias/${h.slug}`}>
 <div className="h-48 overflow-hidden rounded-t-md bg-gray-100 flex items-center justify-center relative">
   <img
     src={h.miniaturaListado}
@@ -149,7 +149,7 @@ export default function HomePreview() {
     }}
   />
 </div>
-
+</a>
 
       {/* Texto */}
       <div className="p-4">
@@ -176,6 +176,7 @@ export default function HomePreview() {
           {/* Tarjeta fija */}
           <Card className="rounded-md shadow-sm border border-gray-200 transition hover:shadow-md">
             <CardContent className="p-0">
+          <a href="/historias">
               <div className="h-48 bg-gray-100 flex items-center justify-center rounded-t-md">
                <img
                 src="/historias/000/mini1.jpg"
@@ -183,7 +184,7 @@ export default function HomePreview() {
                 className="w-full h-full object-cover rounded-xl"
                 />
               </div>
-
+          </a>
               <div className="p-4">
                 <h4 className="font-semibold text-lg mb-2 text-ferroverde">Explorá más historias</h4>
                 <p className="text-sm text-gray-600 mb-4">

@@ -6,6 +6,7 @@ import type { FeatureCollection, Geometry } from "geojson";
 import * as L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
+
 const FERRO = "#00663E";
 
 /** Controla scrollWheelZoom según "active" */
@@ -31,7 +32,7 @@ export default function MapFerrolupa() {
 
   // Fetch Red_Principal
   useEffect(() => {
-    fetch("/api/mapa") // tu route.ts debe devolver { capas: [{ nombre, datos }] }
+    fetch("/api/mapa")
       .then((r) => r.json())
       .then((data) => {
         const red = data.capas.find((c: any) => c.nombre === "Red_Principal");
@@ -40,13 +41,19 @@ export default function MapFerrolupa() {
       .catch(() => null);
   }, []);
 
-  // Popup genérico
+  // Función para popups y hover
   const onEach = (feature: any, layer: any) => {
     if (!feature?.properties) return;
+
+    // Popups
     const rows = Object.entries(feature.properties)
       .map(([k, v]) => `<tr><td style="padding:2px 6px;"><b>${k}</b></td><td style="padding:2px 6px;">${v}</td></tr>`)
       .join("");
     layer.bindPopup(`<table>${rows}</table>`);
+
+    // Hover: aumenta grosor visual al pasar el mouse
+    layer.on("mouseover", () => layer.setStyle({ weight: 4 }));
+    layer.on("mouseout", () => layer.setStyle({ weight: 2 }));
   };
 
   // Ajustar bounds del mapa cuando se cargue la capa
@@ -90,7 +97,7 @@ export default function MapFerrolupa() {
       {/* Mapa */}
       <div className="absolute inset-0 rounded-2xl overflow-hidden">
         <MapContainer
-          center={[-40.50, -63.6167]} // este centro se ajustará con fitBounds
+          center={[-40.50, -63.6167]}
           zoom={4}
           style={{ height: "100%", width: "100%" }}
         >
@@ -122,16 +129,13 @@ export default function MapFerrolupa() {
 
             {/* Overlay Red_Principal */}
             {redPrincipal && (
-              <>
-              
-                <LayersControl.Overlay checked name="Red Principal">
-                  <GeoJSON
-                    data={redPrincipal}
-                    onEachFeature={onEach}
-                    style={() => ({ color: FERRO, weight: 2 })}
-                  />
-                </LayersControl.Overlay>
-              </>
+              <LayersControl.Overlay checked name="Red Principal">
+                <GeoJSON
+                  data={redPrincipal}
+                  onEachFeature={onEach}
+                  style={() => ({ color: FERRO, weight: 2, className: "clickable-line" })}
+                />
+              </LayersControl.Overlay>
             )}
           </LayersControl>
         </MapContainer>

@@ -1,4 +1,4 @@
-import { historias } from "@/data/historiasIndex";
+import historias from "@/data/historias/historias.json";
 
 export function elegirHistoriasDelDia(cantidad: number) {
   const seed = parseInt(new Date().toISOString().slice(0,10).replace(/-/g, ""));
