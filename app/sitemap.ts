@@ -1,18 +1,37 @@
 import { MetadataRoute } from 'next'
+import { descargas } from '@/data/descarga/descargas'
+import { historias } from '@/data/historias'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
+  const baseUrl = 'https://ferrolupa.com.ar'
+
+  // URLs principales
+  const urls: MetadataRoute.Sitemap = [
     {
-      url: 'https://ferrolupa.com.ar',
+      url: baseUrl,
       lastModified: new Date(),
     },
     {
-      url: 'https://ferrolupa.com.ar/historias',
+      url: `${baseUrl}/historias`,
       lastModified: new Date(),
     },
     {
-      url: 'https://ferrolupa.com.ar/descargas',
+      url: `${baseUrl}/descargas`,
       lastModified: new Date(),
     },
   ]
+
+  // Agregamos URLs dinámicas de descargas
+  const descargaUrls = descargas.map(d => ({
+    url: `${baseUrl}/descargas/${d.slug}`,
+    lastModified: new Date(),
+  }))
+
+  // Agregamos URLs dinámicas de historias
+  const historiaUrls = historias.map(h => ({
+    url: `${baseUrl}/historias/${h.slug}`,
+    lastModified: new Date(),
+  }))
+
+  return [...urls, ...descargaUrls, ...historiaUrls]
 }

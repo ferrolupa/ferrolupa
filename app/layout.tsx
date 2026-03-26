@@ -4,13 +4,12 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-
 export const metadata = {
   title: {
     default: "FERROLUPA",
     template: "FERROLUPA | %s",
   },
-    icons: {
+  icons: {
     icon: "/icon.png",
   },
 };
@@ -30,7 +29,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// 👇 ESTA PARTE ES IMPORTANTE
 export default function RootLayout({
   children,
 }: {
@@ -43,6 +41,20 @@ export default function RootLayout({
       >
         {children}
 
+        {/* Google Analytics */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=G-V7XH9HMDBG`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-V7XH9HMDBG');
+          `}
+        </Script>
+
         {/* SCRIPT NECESARIO PARA CUSDIS */}
         <Script
           src="https://cusdis.com/js/cusdis.es.js"
@@ -51,7 +63,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-
-
-
 }

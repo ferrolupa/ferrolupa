@@ -2,36 +2,58 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { descargas } from "@/data/descargas";
+import { descargas } from "@/data/descarga/descargas";
 
-export default function DescargasCypPage() {
+type Categoria = "tecnica" | "planos" | "cyp";
+
+const config = {
+  tecnica: {
+    titulo: "Documentación Técnica",
+    descripcion: "  Informes, memorias técnicas, criterios de diseño y otros documentos de soporte para tus proyectos ferroviarios.",
+  },
+  planos: {
+    titulo: "Planos y Cartografía",
+    descripcion: "Planos DWG, perfiles longitudinales, secciones, documentación gráfica y material geoespacial para obras ferroviarias",
+  },
+  cyp: {
+    titulo: "Cálculo y Proyectos (CYP)",
+    descripcion:
+      "Especificaciones, rendimientos y análisis de precios unitarios para proyectos ferroviarios.",
+  },
+};
+
+export default function ClientDescargas({
+  categoria,
+}: {
+  categoria: Categoria;
+}) {
   const [query, setQuery] = useState("");
 
-  // Filtrar por categoría "cyp"
-  const recursosCyp = useMemo(
-    () => descargas.filter((r) => r.categoria === "cyp"),
-    []
+  const { titulo, descripcion } = config[categoria];
+
+  // 🔹 Filtrar por categoría dinámica
+  const recursos = useMemo(
+    () => descargas.filter((r) => r.categoria === categoria),
+    [categoria]
   );
 
-  // Filtro por texto
+  // 🔹 Filtro por texto
   const recursosFiltrados = useMemo(() => {
-    if (!query.trim()) return recursosCyp;
+    if (!query.trim()) return recursos;
     const q = query.toLowerCase();
-    return recursosCyp.filter(
+    return recursos.filter(
       (r) =>
         r.titulo.toLowerCase().includes(q) ||
         r.descripcion.toLowerCase().includes(q)
     );
-  }, [recursosCyp, query]);
+  }, [recursos, query]);
 
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-8 text-gray-900">
       <div className="max-w-5xl mx-auto">
 
-        {/* Header con botón alineado */}
+        {/* HEADER */}
         <header className="mb-6">
-
-          {/* Fila superior */}
           <div className="flex justify-between items-center">
             <p className="text-[11px] uppercase tracking-[0.2em] text-gray-500">
               Ferrolupa · Descargas
@@ -45,13 +67,12 @@ export default function DescargasCypPage() {
             </a>
           </div>
 
-          {/* Título */}
           <h1 className="text-2xl md:text-3xl font-semibold text-ferroverde mt-1">
-            Cálculo y Proyectos (CYP)
+            {titulo}
           </h1>
 
           <p className="text-sm text-gray-700 mt-2">
-            Especificaciones, rendimientos y analisis de precios unitarios para proyectos ferroviarios.
+            {descripcion}
           </p>
         </header>
 
@@ -60,23 +81,22 @@ export default function DescargasCypPage() {
           <p className="text-[11px] uppercase tracking-[0.2em] text-gray-500 mb-2">
             Publicidad
           </p>
-          <div className="h-24 w-full rounded-lg border border-dashed border-gray-300 bg-gray-50 
-            flex items-center justify-center text-xs text-gray-500 text-center px-3">
+          <div className="h-24 w-full rounded-lg border border-dashed border-gray-300 bg-gray-50 flex items-center justify-center text-xs text-gray-500 text-center px-3">
             Bloque de anuncio o patrocinio
           </div>
         </div>
 
-        {/* Bloque principal */}
+        {/* CONTENIDO */}
         <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 md:p-6">
 
-          {/* Barra superior: conteo + buscador */}
+          {/* BUSCADOR + CONTADOR */}
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-4">
             <div className="text-xs text-gray-500">
               {recursosFiltrados.length} documento
               {recursosFiltrados.length === 1 ? "" : "s"} encontrado
-              {recursosFiltrados.length === recursosCyp.length
+              {recursosFiltrados.length === recursos.length
                 ? ""
-                : ` (de ${recursosCyp.length} totales)`}
+                : ` (de ${recursos.length} totales)`}
             </div>
 
             <div className="w-full md:w-64">
@@ -90,7 +110,7 @@ export default function DescargasCypPage() {
             </div>
           </div>
 
-          {/* Tabla */}
+          {/* TABLA */}
           {recursosFiltrados.length === 0 ? (
             <p className="text-sm text-gray-500">
               No se encontraron documentos que coincidan con tu búsqueda.
@@ -118,21 +138,21 @@ export default function DescargasCypPage() {
                       key={item.id}
                       className={index % 2 === 1 ? "bg-gray-50/60" : ""}
                     >
-                      <td className="px-3 py-2 align-top">
+                      <td className="px-3 py-2">
                         <p className="text-xs font-semibold text-gray-900">
                           {item.titulo}
                         </p>
                       </td>
 
-                      <td className="px-3 py-2 align-top">
+                      <td className="px-3 py-2">
                         <p className="text-xs text-gray-600">
                           {item.descripcion}
                         </p>
                       </td>
 
-                      <td className="px-3 py-2 align-top text-right">
+                      <td className="px-3 py-2 text-right">
                         <Link
-                          href={`/descargar?id=${encodeURIComponent(item.id)}`}
+                          href={`/descargas/d/${item.slug}`}
                           className="inline-flex items-center justify-center px-3 py-1.5 rounded-md bg-ferroverde text-white text-[11px] font-semibold hover:bg-ferroverde/90 transition"
                         >
                           Descargar
@@ -144,7 +164,6 @@ export default function DescargasCypPage() {
               </table>
             </div>
           )}
-
         </section>
 
         {/* PUBLICIDAD INFERIOR */}
@@ -152,8 +171,7 @@ export default function DescargasCypPage() {
           <p className="text-[11px] uppercase tracking-[0.2em] text-gray-500 mb-2">
             Publicidad
           </p>
-          <div className="h-24 w-full rounded-lg border border-dashed border-gray-300 bg-gray-50 
-            flex items-center justify-center text-xs text-gray-500 text-center px-3">
+          <div className="h-24 w-full rounded-lg border border-dashed border-gray-300 bg-gray-50 flex items-center justify-center text-xs text-gray-500 text-center px-3">
             Segundo bloque de anuncio o patrocinio
           </div>
         </div>

@@ -1,12 +1,28 @@
 const csv = require('csvtojson');
 const fs = require('fs');
+const path = require('path');
 
-const input = './data/historias/historias.csv';
-const output = './data/historias/historias.json';
+const inputCsv = path.join(__dirname, '../data/descarga/descargas.csv');
+const outputTs = path.join(__dirname, '../data/descarga/descargas.ts');
 
 csv()
-  .fromFile(input)
+  .fromFile(inputCsv)
   .then((jsonArray) => {
-    fs.writeFileSync(output, JSON.stringify(jsonArray, null, 2));
-    console.log('✅ JSON generado correctamente');
+    const tsContent = `export type CategoriaDescarga = "tecnica" | "planos" | "cyp";
+
+export type RecursoDescarga = {
+  id: string;
+  titulo: string;
+  slug: string;
+  descripcion: string;
+  url: string;
+  video?: string;
+  categoria: CategoriaDescarga;
+};
+
+export const descargas: RecursoDescarga[] = ${JSON.stringify(jsonArray, null, 2)};
+`;
+
+    fs.writeFileSync(outputTs, tsContent);
+    console.log('✅ Archivo descargas.ts generado correctamente en data/descarga');
   });

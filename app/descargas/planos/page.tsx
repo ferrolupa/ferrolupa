@@ -1,9 +1,11 @@
-import ClientPage from "./ClientPage";
+import ClientDescargas from "../ClientDescargas";
 
 export const metadata = {
-  title: "DESCARGAS",
+  title: "Planos Ferroviarios | Ferrolupa",
+  description:
+    "Planos técnicos ferroviarios listos para descargar y utilizar en proyectos.",
 };
 
 export default function Page() {
-  return <ClientPage />;
+  return <ClientDescargas categoria="planos" />;
 }

@@ -1,9 +1,11 @@
-import ClientPage from "./ClientPage";
+import ClientDescargas from "../ClientDescargas";
 
 export const metadata = {
-  title: "DESCARGAS",
+  title: "Cálculo y Proyectos (CYP) | Ferrolupa",
+  description:
+    "Especificaciones, rendimientos y análisis de precios unitarios para proyectos ferroviarios.",
 };
 
 export default function Page() {
-  return <ClientPage />;
+  return <ClientDescargas categoria="cyp" />;
 }
